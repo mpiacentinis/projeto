@@ -3,19 +3,34 @@
 namespace Project\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Project\Http\Requests;
-use Project\Http\Controllers\Controller;
+use Project\Repositories\ClientRepository;
+use Project\Services\ClientService;
 
 class ClientController extends Controller
 {
+    private $repository;
+    /**
+     * @var ClientService
+     */
+    private $service;
+
+    /**
+     * @param ClientRepository $repository
+     * @param ClientService $service
+     */
+    public function __construct( ClientRepository $repository, ClientService $service)
+    {
+        $this->repository = $repository;
+        $this->service = $service;
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(  )
     {
-        return \Project\Client::all();
+        return $this->repository->all();
     }
 
     /**
@@ -36,7 +51,7 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $this->service->create($request->all());
     }
 
     /**
@@ -47,19 +62,9 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        //
+        return  $this->repository->find($id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -70,7 +75,7 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return $this->service->update($request->all(), $id );
     }
 
     /**
@@ -81,6 +86,6 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->repository->delete( $id);
     }
 }

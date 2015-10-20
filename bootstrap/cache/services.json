@@ -23,10 +23,12 @@
         "Illuminate\\Translation\\TranslationServiceProvider",
         "Illuminate\\Validation\\ValidationServiceProvider",
         "Illuminate\\View\\ViewServiceProvider",
+        "Prettus\\Repository\\Providers\\RepositoryServiceProvider",
         "Project\\Providers\\AppServiceProvider",
         "Project\\Providers\\AuthServiceProvider",
         "Project\\Providers\\EventServiceProvider",
-        "Project\\Providers\\RouteServiceProvider"
+        "Project\\Providers\\RouteServiceProvider",
+        "Project\\Providers\\ProjetcRepositoryProvider"
     ],
     "eager": [
         "Illuminate\\Auth\\AuthServiceProvider",
@@ -40,10 +42,12 @@
         "Illuminate\\Session\\SessionServiceProvider",
         "Illuminate\\Validation\\ValidationServiceProvider",
         "Illuminate\\View\\ViewServiceProvider",
+        "Prettus\\Repository\\Providers\\RepositoryServiceProvider",
         "Project\\Providers\\AppServiceProvider",
         "Project\\Providers\\AuthServiceProvider",
         "Project\\Providers\\EventServiceProvider",
-        "Project\\Providers\\RouteServiceProvider"
+        "Project\\Providers\\RouteServiceProvider",
+        "Project\\Providers\\ProjetcRepositoryProvider"
     ],
     "deferred": {
         "command.app.name": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",
