@@ -25,4 +25,13 @@ class Project extends Model implements Transformable
         return $this->belongsTo(Client::class);
 
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuario()
+    {
+        return $this->belongsTo(User::class);
+
+    }
 }
