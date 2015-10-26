@@ -38,8 +38,8 @@ class User extends Model implements AuthenticatableContract,
     protected $hidden = ['password', 'remember_token'];
 
 
-    public function usuario()
+    public function owner()
     {
-        return $this->hasMany( User::class);
+        return $this->hasMany( Project::class);
     }
 }

@@ -20,18 +20,17 @@ class Project extends Model implements Transformable
         'due_date'
     ];
 
+    public function owner()
+    {
+        return $this->belongsTo(User::class);
+
+    }
+
     public function client()
     {
         return $this->belongsTo(Client::class);
 
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function usuario()
-    {
-        return $this->belongsTo(User::class);
 
-    }
 }
