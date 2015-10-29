@@ -3,6 +3,8 @@
 namespace Project\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Project\Entities\Client;
+use Project\Entities\Project;
 use Project\Repositories\ClientRepository;
 use Project\Services\ClientService;
 
@@ -86,6 +88,15 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        return $this->repository->delete( $id);
+
+        $projet = $this->repository->with(['project'])->findWhere(['id' => $id]);
+        if ( count($projet) > 0 ) {
+            return [
+                'error' => true,
+                'message' => 'Este Cliente tem Projetos, Não é possivel sua remoção'
+            ];
+        } else {
+          return $this->repository->delete( $id);
+        }
     }
 }

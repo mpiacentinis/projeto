@@ -2,6 +2,7 @@
 
 namespace Project\Entities;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 
 class Client extends Model
@@ -20,5 +21,7 @@ class Client extends Model
     {
         return $this->hasMany( Project::class);
     }
+
+
 }
 

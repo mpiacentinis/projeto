@@ -18,4 +18,5 @@ class ClientRepositoryEloquent extends  BaseRepository implements ClientReposito
         // TODO: Implement model() method.
         return Client::class;
     }
+
 }
