@@ -3,24 +3,22 @@
 namespace Project\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Project\Entities\Client;
-use Project\Entities\Project;
-use Project\Repositories\ClientRepository;
-use Project\Services\ClientService;
+use Project\Repositories\ProjectNoteRepository;
+use Project\Services\ProjectNoteService;
 
-class ClientController extends Controller
+class ProjectNoteController extends Controller
 {
     private $repository;
     /**
-     * @var ClientService
+     * @var ProjectNoteService
      */
     private $service;
 
     /**
-     * @param ClientRepository $repository
-     * @param ClientService $service
+     * @param ProjectNoteRepository $repository
+     * @param ProjectNoteService $service
      */
-    public function __construct( ClientRepository $repository, ClientService $service)
+    public function __construct( ProjectNoteRepository $repository, ProjectNoteService $service)
     {
         $this->repository = $repository;
         $this->service = $service;
@@ -30,9 +28,9 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(  )
+    public function index( $id )
     {
-        return $this->repository->all();
+        return  $this->repository->findWhere(['project_id' => $id ]);
     }
 
     /**
@@ -62,11 +60,10 @@ class ClientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, $noteId)
     {
-        return  $this->repository->findWhere(['id' => $id ]);
+        return  $this->repository->findWhere(['project_id' => $id, 'id' => $noteId ]);
     }
-
 
     /**
      * Update the specified resource in storage.
@@ -75,9 +72,9 @@ class ClientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, $noteId )
     {
-        return $this->service->update($request->all(), $id );
+        return $this->service->update($request->all(), $noteId );
     }
 
     /**
@@ -86,23 +83,19 @@ class ClientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, $noteId )
     {
 
-        if ( count( self::show($id) ) == 0 ) {
+        if ( count( self::show($id, $noteId) ) == 0 ) {
             return [
                 'error' => true,
                 'message' => 'Nao encontrado'
             ];
         } else {
-            if ( count($this->repository->with(['project'])->findWhere(['id' => $id])) > 0 ) {
-                return [
-                    'error' => true,
-                    'message' => 'Este Cliente tem Projetos'
-                ];
-            } else {
-                return $this->repository->delete( $id);
-            }
+            return $this->repository->delete( $noteId);
         }
+
+
+
     }
 }

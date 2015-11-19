@@ -3,6 +3,7 @@
 namespace Project\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Project\Repositories\ProjectMemberRepository;
 use Project\Repositories\ProjectRepository;
 use Project\Services\ProjectService;
 
@@ -18,7 +19,7 @@ class ProjectController extends Controller
      * @param ProjectRepository $repository
      * @param ProjectService $service
      */
-    public function __construct( ProjectRepository $repository, ProjectService $service)
+    public function __construct( ProjectRepository $repository, ProjectService $service )
     {
         $this->repository = $repository;
         $this->service = $service;
@@ -65,13 +66,7 @@ class ProjectController extends Controller
     {
         return  $this->repository->with(['owner', 'client'])->findWhere(['id' => $id]);
     }
-
-
-    public function relationships($id)
-    {
-        return  $this->repository->with(['client_id'])->find($id);
-    }
-
+    
 
     /**
      * Update the specified resource in storage.
@@ -93,6 +88,67 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-        return $this->repository->delete( $id);
+
+        if ( count( self::show($id) ) == 0 ) {
+            return [
+                'error' => true,
+                'message' => 'Nao encontrado'
+            ];
+        } else {
+            if ( count($this->repository->with('notes')->find($id)) > 0 ) {
+                return [
+                    'error' => true,
+                    'message' => 'Este Projeto tem Notas'
+                ];
+            } else {
+                return $this->repository->delete( $id);
+            }
+
+        }
+
+
     }
+
+    /**
+     * @param $id
+     * @return Response
+     */
+    public function showMembers($id)
+    {
+        return $this->repository->with('member')->findWhere(['id' => $id ]);
+    }
+
+    /**
+     * @param $id
+     * @param $memberId
+     * @return Response
+     */
+    public function addMember($id, $memberId)
+    {
+        return $this->repository->addMember($id, $memberId);
+    }
+    /**
+     * @param $id
+     * @param $memberId
+     * @return Response
+     */
+    public function removeMember($id, $memberId)
+    {
+        if ( count( self::show($id) ) == 0 ) {
+            return [
+                'error' => true,
+                'message' => 'Nao encontrado'
+            ];
+        } else {
+            if ( count($this->repository->with(['project'])->findWhere(['id' => $id])) > 0 ) {
+                return [
+                    'error' => true,
+                    'message' => 'Este Cliente tem Projetos'
+                ];
+            } else {
+                return $this->repository->delete( $id);
+            }
+        }
+    }
+
 }

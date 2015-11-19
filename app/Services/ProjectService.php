@@ -16,11 +16,16 @@ class ProjectService
      * @var ProjectValidator
      */
     private $validator;
+    /**
+     * @var ProjectMemberRepository
+     */
+    private $memberRepository;
 
-    public function __construct( ProjectRepository $repository, ProjectValidator $validator)
+    public function __construct( ProjectRepository $repository, ProjectValidator $validator, ProjectMemberRepository $memberRepository )
     {
         $this->repository = $repository;
         $this->validator = $validator;
+        $this->memberRepository = $memberRepository;
     }
 
     /**
@@ -54,4 +59,41 @@ class ProjectService
         }
 
     }
+
+    public function addMember($projectId, $memberId)
+    {
+        try {
+            $project = $this->repository->find($projectId);
+        } catch (ModelNotFoundException $e) {
+            return [
+                'error' => true,
+                'message' => "Project {$projectId} not found",
+            ];
+        }
+
+        $project->members()->attach($memberId);
+    }
+
+    public function removeMember($projectId, $memberId)
+    {
+        try {
+            $project = $this->repository->find($projectId);
+        } catch (ModelNotFoundException $e) {
+            return [
+                'error' => true,
+                'message' => "Project {$projectId} not found",
+            ];
+        }
+        $project->members()->detach($memberId);
+    }
+
+    public function isMember($projectId, $memberId)
+    {
+        $project = $this->memberRepository->findWhere(['project_id' => $projectId, 'user_id' => $memberId]);
+        if (count($project)){
+            return true;
+        }
+        return false;
+    }
+
 }

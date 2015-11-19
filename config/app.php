@@ -146,7 +146,7 @@ return [
         Project\Providers\AuthServiceProvider::class,
         Project\Providers\EventServiceProvider::class,
         Project\Providers\RouteServiceProvider::class,
-        Project\Providers\ProjetcRepositoryProvider::class,
+        Project\Providers\ProjectRepositoryProvider::class,
 
 
 

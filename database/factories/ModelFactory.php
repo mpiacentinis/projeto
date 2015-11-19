@@ -42,3 +42,29 @@ $factory->define(Project\Entities\Project::class, function (Faker\Generator $fak
         'due_date' => $faker->dateTime('now'),
     ];
 });
+
+
+$factory->define(Project\Entities\ProjectNote::class, function (Faker\Generator $faker) {
+    return [
+        'project_id' => rand(1,10),
+        'title' => $faker->word,
+        'note' => $faker->paragraph,
+    ];
+});
+
+$factory->define(Project\Entities\ProjectTask::class, function (Faker\Generator $faker) {
+    return [
+        'project_id' => rand(1,10),
+        'name' => $faker->word,
+        'due_date' => $faker->dateTime('now'),
+        'start_date' => $faker->dateTime('now'),
+        'status' => rand(1,3),
+    ];
+});
+
+$factory->define(Project\Entities\ProjectMember::class, function (Faker\Generator $faker) {
+    return [
+        'project_id' => rand(1,10),
+        'user_id' => rand(1,10),
+    ];
+});

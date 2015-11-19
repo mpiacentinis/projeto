@@ -28,7 +28,7 @@
         "Project\\Providers\\AuthServiceProvider",
         "Project\\Providers\\EventServiceProvider",
         "Project\\Providers\\RouteServiceProvider",
-        "Project\\Providers\\ProjetcRepositoryProvider"
+        "Project\\Providers\\ProjectRepositoryProvider"
     ],
     "eager": [
         "Illuminate\\Auth\\AuthServiceProvider",
@@ -47,7 +47,7 @@
         "Project\\Providers\\AuthServiceProvider",
         "Project\\Providers\\EventServiceProvider",
         "Project\\Providers\\RouteServiceProvider",
-        "Project\\Providers\\ProjetcRepositoryProvider"
+        "Project\\Providers\\ProjectRepositoryProvider"
     ],
     "deferred": {
         "command.app.name": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",
