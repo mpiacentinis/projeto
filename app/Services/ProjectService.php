@@ -3,6 +3,7 @@
 namespace Project\Services;
 
 use Prettus\Validator\Exceptions\ValidatorException;
+use Project\Repositories\ProjectMemberRepository;
 use Project\Repositories\ProjectRepository;
 use Project\Validators\ProjectValidator;
 
@@ -84,16 +85,37 @@ class ProjectService
                 'message' => "Project {$projectId} not found",
             ];
         }
-        $project->members()->detach($memberId);
+
+        $projectMember = $this->memberRepository->findWhere(['project_id' => $projectId, 'user_id' => $memberId ]);
+        if (count($projectMember) == null ) {
+            return [
+                'error' => true,
+                'message' => "Membro {$memberId} não encontrado no Projeto {$projectId}",
+            ];
+        }
+        foreach( $projectMember as $members ){
+            $this->memberRepository->delete( $members->id );
+        }
+
+        return [
+            'message' => "Membro {$memberId} removido do  Projeto {$projectId}",
+        ];
+
     }
+
 
     public function isMember($projectId, $memberId)
     {
         $project = $this->memberRepository->findWhere(['project_id' => $projectId, 'user_id' => $memberId]);
-        if (count($project)){
-            return true;
+        if (count($project) >= 1 ){
+            return [
+                'message' => "Membro {$memberId} encontrado no Projeto {$projectId}",
+            ];
         }
-        return false;
+        return [
+            'error' => true,
+            'message' => "Membro {$memberId} não encontrado no Projeto {$projectId}",
+        ];
     }
 
 }

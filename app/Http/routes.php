@@ -23,7 +23,20 @@ Route::controllers([
 
 ]);
 */
-Route::get('/', 'ClientController@index');
+
+use Illuminate\Support\Facades\Response;
+use LucaDegasperi\OAuth2Server\Facades\Authorizer;
+
+Route::post('oauth/access_token', function()
+{
+    return Response::json( Authorizer::issueAccessToken());
+});
+
+
+
+Route::group(['middleware' => 'oauth' ], function () {
+    
+    Route::get('/', 'ClientController@index');
 
     Route::group(['prefix' => 'clients'], function () {
         Route::get('',                  ['as' => 'clients.index',           'uses' => 'ClientController@index']);
@@ -47,15 +60,16 @@ Route::get('/', 'ClientController@index');
         Route::put('/{id}/task/{taskId}',   ['as' => 'projectTask.update',          'uses' => 'ProjectTaskController@update']);
         Route::delete('/{id}/task/{taskId}',['as' => 'projectTask.delete',          'uses' => 'ProjectTaskController@destroy']);
 
-        Route::get('/{id}/member',            ['as' => 'projectMember.index',           'uses' => 'ProjectMemberController@index']);
-        Route::post('/{id}/member',           ['as' => 'projectMember.store',           'uses' => 'ProjectMemberController@store']);
+        Route::get('/{id}/member',              ['as' => 'projectMember.index',           'uses' => 'ProjectMemberController@index']);
+        Route::post('/{id}/member',             ['as' => 'projectMember.store',           'uses' => 'ProjectMemberController@store']);
         Route::get('/{id}/member/{memberId}',   ['as' => 'projectMember.show',            'uses' => 'ProjectMemberController@show']);
         Route::put('/{id}/member/{memberId}',   ['as' => 'projectMember.update',          'uses' => 'ProjectMemberController@update']);
         Route::delete('/{id}/member/{memberId}',['as' => 'projectMember.delete',          'uses' => 'ProjectMemberController@destroy']);
 
 
-        Route::get('/{id}/members',         ['as' => 'projectMembers.show',          'uses' => 'ProjectController@showMembers']);
-        Route::delete('/{id}/members/{memberId}',['as' => 'projectMembers.delete',    'uses' => 'ProjectController@removeMember']);
+        Route::get('/{id}/members',               ['as' => 'projectMembers.show',         'uses' => 'ProjectController@showMembers']);
+        Route::get('/{id}/members/{memberId}',    ['as' => 'projectMembers.isMember',     'uses' => 'ProjectController@isMember']);
+        Route::delete('/{id}/members/{memberId}', ['as' => 'projectMembers.delete',       'uses' => 'ProjectController@removeMember']);
 
         Route::get('',                  ['as' => 'project.index',           'uses' => 'ProjectController@index']);
         Route::post('',                 ['as' => 'project.store',           'uses' => 'ProjectController@store']);
@@ -64,3 +78,6 @@ Route::get('/', 'ClientController@index');
         Route::put('/{id}',             ['as' => 'project.update',          'uses' => 'ProjectController@update']);
 
     });
+
+});
+

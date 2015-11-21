@@ -111,6 +111,26 @@ class ProjectController extends Controller
 
     /**
      * @param $id
+     * @param $memberId
+     * @return array
+     */
+    public function isMember($id, $memberId)
+    {
+        return $this->service->isMember($id, $memberId);
+    }
+
+    /**
+     * @param $id
+     * @param $memberId
+     * @return array
+     */
+    public  function removeMember($id, $memberId)
+    {
+        return $this->service->removeMember($id, $memberId);
+    }
+
+    /**
+     * @param $id
      * @return Response
      */
     public function showMembers($id)
@@ -118,37 +138,5 @@ class ProjectController extends Controller
         return $this->repository->with('member')->findWhere(['id' => $id ]);
     }
 
-    /**
-     * @param $id
-     * @param $memberId
-     * @return Response
-     */
-    public function addMember($id, $memberId)
-    {
-        return $this->repository->addMember($id, $memberId);
-    }
-    /**
-     * @param $id
-     * @param $memberId
-     * @return Response
-     */
-    public function removeMember($id, $memberId)
-    {
-        if ( count( self::show($id) ) == 0 ) {
-            return [
-                'error' => true,
-                'message' => 'Nao encontrado'
-            ];
-        } else {
-            if ( count($this->repository->with(['project'])->findWhere(['id' => $id])) > 0 ) {
-                return [
-                    'error' => true,
-                    'message' => 'Este Cliente tem Projetos'
-                ];
-            } else {
-                return $this->repository->delete( $id);
-            }
-        }
-    }
 
 }
