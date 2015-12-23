@@ -3,9 +3,12 @@
 namespace Project\Services;
 
 use Prettus\Validator\Exceptions\ValidatorException;
+use Project\Repositories\ProjectFileRepository;
 use Project\Repositories\ProjectMemberRepository;
 use Project\Repositories\ProjectRepository;
 use Project\Validators\ProjectValidator;
+use Illuminate\Support\Facades\File;
+use Illuminate\Contracts\Filesystem\Factory as Storage;
 
 class ProjectService
 {
@@ -21,12 +24,22 @@ class ProjectService
      * @var ProjectMemberRepository
      */
     private $memberRepository;
+    /**
+     * @var Storage
+     */
+    private $storage;
+    /**
+     * @var ProjectFileRepository
+     */
+    private $fileRepository;
 
-    public function __construct( ProjectRepository $repository, ProjectValidator $validator, ProjectMemberRepository $memberRepository )
+    public function __construct( ProjectRepository $repository, ProjectValidator $validator, ProjectMemberRepository $memberRepository, Storage $storage, ProjectFileRepository $fileRepository)
     {
         $this->repository = $repository;
         $this->validator = $validator;
         $this->memberRepository = $memberRepository;
+        $this->storage = $storage;
+        $this->fileRepository = $fileRepository;
     }
 
     /**
@@ -118,4 +131,24 @@ class ProjectService
         ];
     }
 
+    public function createFile(array $data)
+    {
+        $project = $this->repository->skipPresenter()->find( $data['project_id']);
+        $project->files()->create($data);
+        $this->storage->put($data['name'].".".$data['extension'], File::get($data['file']));
+    }
+
+    public function deleteFile($id)
+    {
+        $project = $this->repository->skipPresenter()->find( $id );
+        $fileUpload = $project->files;
+
+        foreach( $fileUpload as $file )
+        {
+            $arquivo = $file->name.".".$file->extension;
+            $this->storage->delete($arquivo);
+            $this->fileRepository->delete($file->id);
+
+        }
+    }
 }

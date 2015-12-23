@@ -3,7 +3,7 @@
 namespace Project\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Project\Repositories\ProjectMemberRepository;
+use Project\Repositories\ProjectFileRepository;
 use Project\Repositories\ProjectRepository;
 use Project\Services\ProjectService;
 
@@ -14,15 +14,24 @@ class ProjectController extends Controller
      * @var ProjectService
      */
     private $service;
+    /**
+     * @var ProjectFileRepository
+     */
+    private $fileRepository;
+    /**
+     * @var ProjectFileRepository
+     */
+    private $filesRepository;
 
     /**
      * @param ProjectRepository $repository
      * @param ProjectService $service
      */
-    public function __construct( ProjectRepository $repository, ProjectService $service )
+    public function __construct( ProjectRepository $repository, ProjectService $service, ProjectFileRepository $filesRepository)
     {
         $this->repository = $repository;
         $this->service = $service;
+        $this->filesRepository = $filesRepository;
     }
     /**
      * Display a listing of the resource.

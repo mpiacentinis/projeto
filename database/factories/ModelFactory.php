@@ -68,3 +68,13 @@ $factory->define(Project\Entities\ProjectMember::class, function (Faker\Generato
         'user_id' => rand(1,10),
     ];
 });
+
+$factory->define(Project\Entities\OauthClients::class, function (Faker\Generator $faker) {
+    return [
+        'id' => $faker->word,
+        'name' => $faker->word,
+        'secret' => $faker->word,
+    ];
+});
+
+

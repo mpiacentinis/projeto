@@ -35,7 +35,8 @@ Route::post('oauth/access_token', function()
 
 
 Route::group(['middleware' => 'oauth' ], function () {
-    
+
+
     Route::get('/', 'ClientController@index');
 
     Route::group(['prefix' => 'clients'], function () {
@@ -70,6 +71,10 @@ Route::group(['middleware' => 'oauth' ], function () {
         Route::get('/{id}/members',               ['as' => 'projectMembers.show',         'uses' => 'ProjectController@showMembers']);
         Route::get('/{id}/members/{memberId}',    ['as' => 'projectMembers.isMember',     'uses' => 'ProjectController@isMember']);
         Route::delete('/{id}/members/{memberId}', ['as' => 'projectMembers.delete',       'uses' => 'ProjectController@removeMember']);
+
+        Route::post('/{id}/file',                    ['as' => 'project.fileUpload',        'uses' => 'ProjectFileController@store']);
+        Route::get('/{id}/file',                     ['as' => 'project.fileGet',           'uses' => 'ProjectFileController@show']);
+        Route::delete('/{id}/file',                  ['as' => 'project.fileDelete',        'uses' => 'ProjectFileController@destroy']);
 
         Route::get('',                  ['as' => 'project.index',           'uses' => 'ProjectController@index']);
         Route::post('',                 ['as' => 'project.store',           'uses' => 'ProjectController@store']);

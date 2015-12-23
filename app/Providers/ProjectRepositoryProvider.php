@@ -13,6 +13,8 @@ use Project\Repositories\ProjectRepository;
 use Project\Repositories\ProjectRepositoryEloquent;
 use Project\Repositories\ProjectTaskRepository;
 use Project\Repositories\ProjectTaskRepositoryEloquent;
+use Project\Repositories\ProjectFileRepository;
+use Project\Repositories\ProjectFileRepositoryEloquent;
 
 class ProjectRepositoryProvider extends ServiceProvider
 {
@@ -36,6 +38,9 @@ class ProjectRepositoryProvider extends ServiceProvider
         $this->app->bind( ClientRepository::class,
                           ClientRepositoryEloquent::class );
 
+        $this->app->bind( ProjectFileRepository::class,
+            ProjectFileRepositoryEloquent::class );
+
         $this->app->bind( ProjectRepository::class,
                           ProjectRepositoryEloquent::class );
 
@@ -47,5 +52,6 @@ class ProjectRepositoryProvider extends ServiceProvider
 
         $this->app->bind( ProjectMemberRepository::class,
                           ProjectMemberRepositoryEloquent::class );
+
     }
 }
