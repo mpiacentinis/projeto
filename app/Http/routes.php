@@ -27,6 +27,10 @@ Route::controllers([
 use Illuminate\Support\Facades\Response;
 use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 
+Route::get('/', function() {
+    return view('app');
+});
+
 Route::post('oauth/access_token', function()
 {
     return Response::json( Authorizer::issueAccessToken());
@@ -37,7 +41,7 @@ Route::post('oauth/access_token', function()
 Route::group(['middleware' => 'oauth' ], function () {
 
 
-    Route::get('/', 'ClientController@index');
+    //Route::get('/', 'ClientController@index');
 
     Route::group(['prefix' => 'clients'], function () {
         Route::get('',                  ['as' => 'clients.index',           'uses' => 'ClientController@index']);
